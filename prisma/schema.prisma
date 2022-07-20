@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customers {
+  id         String      @id @default(uuid())
+  pseudo     String
+  lastname   String
+  firstname  String
+  birthdate  String
+  avatar     String
+  email      String      @unique
+  password   String
+  role       String
+  favorites  Favorites[]
+  comments   Comments[]
+  diets      String
+  newsletter Boolean
+}
+
+model Recipes {
+  id                  String                @id @default(uuid())
+  name                String                @unique
+  description         String
+  score               Int
+  duration            Int
+  difficulty          Int
+  image               String
+  numberOfPerson      Int
+  isValidate          Boolean               @default(false)
+  celebrations_id     String[]
+  country_id          String[]
+  dishes_id           String[]
+  calories_total      Int
+  celebrations        String          
+  country             String               
+  dishes              String                
+  Favorites           Favorites[]
+  Comments            Comments[]
+  Newsletters_details Newsletters_details[]
+  Process             Process[]
+}
+
+model Favorites {
+  id          String    @id @default(uuid())
+  customer_id String
+  recipe_id   String
+  customer    Customers @relation(fields: [customer_id], references: [id])
+  recipe      Recipes   @relation(fields: [recipe_id], references: [id])
+}
+
+model Comments {
+  id          String    @id @default(uuid())
+  comment     String
+  level       Int
+  parent_id   Int
+  date        DateTime  @default(now())
+  customer_id String
+  recipe_id   String
+  customer    Customers @relation(fields: [customer_id], references: [id])
+  recipe      Recipes   @relation(fields: [recipe_id], references: [id])
+}
+
+model Newsletters {
+  id                  String                @id @default(uuid())
+  title               String
+  content             String
+  newsletter_details  String[]
+  date                DateTime              @default(now())
+  Newsletters_details Newsletters_details[]
+}
+
+model Newsletters_details {
+  id            String      @id @default(uuid())
+  newsletter_id String
+  recipe_id     String
+  newsletter    Newsletters @relation(fields: [newsletter_id], references: [id])
+  recipe        Recipes     @relation(fields: [recipe_id], references: [id])
+}
+
+model Process {
+  id        String  @id @default(uuid())
+  recipe_id String
+  steps     String
+  recipe    Recipes @relation(fields: [recipe_id], references: [id])
+}
+
+model Celebrations {
+  id      String    @id @default(uuid())
+  name    String
+}
+
+model Country {
+  id      String    @id @default(uuid())
+  name    String
+}
+
+model Dishes {
+  id      String    @id @default(uuid())
+  name    String
+}
+
+model Aliments {
+  id                 String               @id @default(uuid())
+  name               String
+  category           String
+  type               String
+  measure_id         String
+  image              String
+  measure            String
+  measuresId         String
+}
+
+model Measures {
+  id       String     @id @default(uuid())
+  unities  String
+}
+
+model Ingredients_recipe {
+  id         String   @id @default(uuid())
+  recipe_id  String
+  aliment_id String
+  quantity   Int
+  aliment    String
+}
