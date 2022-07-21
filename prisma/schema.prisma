@@ -24,6 +24,16 @@ model Customers {
   comments   Comments[]
   diets      String
   newsletter Boolean
+  reset_password Reset_password?
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
+}
+
+model Reset_password {
+  id String @id @default( uuid() )
+  customer Customers @relation( fields: [customer_id], references: [id])
+  customer_id String @unique
+  create_at DateTime @default( now() )
 }
 
 model Recipes {
@@ -47,6 +57,8 @@ model Recipes {
   Comments            Comments[]
   Newsletters_details Newsletters_details[]
   Process             Process[]
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Favorites {
@@ -55,6 +67,8 @@ model Favorites {
   recipe_id   String
   customer    Customers @relation(fields: [customer_id], references: [id])
   recipe      Recipes   @relation(fields: [recipe_id], references: [id])
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Comments {
@@ -67,6 +81,8 @@ model Comments {
   recipe_id   String
   customer    Customers @relation(fields: [customer_id], references: [id])
   recipe      Recipes   @relation(fields: [recipe_id], references: [id])
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Newsletters {
@@ -76,6 +92,8 @@ model Newsletters {
   newsletter_details  String[]
   date                DateTime              @default(now())
   Newsletters_details Newsletters_details[]
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Newsletters_details {
@@ -84,6 +102,8 @@ model Newsletters_details {
   recipe_id     String
   newsletter    Newsletters @relation(fields: [newsletter_id], references: [id])
   recipe        Recipes     @relation(fields: [recipe_id], references: [id])
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Process {
@@ -91,21 +111,29 @@ model Process {
   recipe_id String
   steps     String
   recipe    Recipes @relation(fields: [recipe_id], references: [id])
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Celebrations {
   id      String    @id @default(uuid())
   name    String
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Country {
   id      String    @id @default(uuid())
   name    String
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Dishes {
   id      String    @id @default(uuid())
   name    String
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Aliments {
@@ -117,11 +145,15 @@ model Aliments {
   image              String
   measure            String
   measuresId         String
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Measures {
   id       String     @id @default(uuid())
   unities  String
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
 
 model Ingredients_recipe {
@@ -130,4 +162,6 @@ model Ingredients_recipe {
   aliment_id String
   quantity   Int
   aliment    String
+  updated_at DateTime @updatedAt
+  create_at DateTime @default( now() )
 }
